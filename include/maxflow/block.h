@@ -89,8 +89,8 @@
 	deallocated only when the destructor is called.
 */
 
-#ifndef __BLOCK_H__
-#define __BLOCK_H__
+#ifndef __MAXFLOW_BLOCK_H__
+#define __MAXFLOW_BLOCK_H__
 
 #include <stdlib.h>
 

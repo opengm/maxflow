@@ -57,8 +57,8 @@
 	For description, license, example usage see README.TXT.
 */
 
-#ifndef __GRAPH_H__
-#define __GRAPH_H__
+#ifndef __MAXFLOW_GRAPH_H__
+#define __MAXFLOW_GRAPH_H__
 
 #include <string.h>
 #include "block.h"
