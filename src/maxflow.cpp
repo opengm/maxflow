@@ -9,11 +9,11 @@ using namespace maxflowLib;
 /*
 	special constants for node->parent. Duplicated in graph.cpp, both should match!
 */
-#define TERMINAL ( (arc *) 1 )		/* to terminal */
-#define ORPHAN   ( (arc *) 2 )		/* orphan */
+#define MAXFLOW_TERMINAL ( (arc *) 1 )		/* to terminal */
+#define MAXFLOW_ORPHAN   ( (arc *) 2 )		/* orphan */
 
 
-#define INFINITE_D ((int)(((unsigned)-1)/2))		/* infinite distance to the terminal */
+#define MAXFLOW_INFINITE_D ((int)(((unsigned)-1)/2))		/* infinite distance to the terminal */
 
 /***********************************************************************/
 
@@ -81,7 +81,7 @@ template <typename captype, typename tcaptype, typename flowtype>
 	inline void Graph<captype,tcaptype,flowtype>::set_orphan_front(node *i)
 {
 	nodeptr *np;
-	i -> parent = ORPHAN;
+	i -> parent = MAXFLOW_ORPHAN;
 	np = nodeptr_block -> New();
 	np -> ptr = i;
 	np -> next = orphan_first;
@@ -92,7 +92,7 @@ template <typename captype, typename tcaptype, typename flowtype>
 	inline void Graph<captype,tcaptype,flowtype>::set_orphan_rear(node *i)
 {
 	nodeptr *np;
-	i -> parent = ORPHAN;
+	i -> parent = MAXFLOW_ORPHAN;
 	np = nodeptr_block -> New();
 	np -> ptr = i;
 	if (orphan_last) orphan_last -> next = np;
@@ -137,7 +137,7 @@ template <typename captype, typename tcaptype, typename flowtype>
 		{
 			/* i is connected to the source */
 			i -> is_sink = 0;
-			i -> parent = TERMINAL;
+			i -> parent = MAXFLOW_TERMINAL;
 			set_active(i);
 			i -> DIST = 1;
 		}
@@ -145,7 +145,7 @@ template <typename captype, typename tcaptype, typename flowtype>
 		{
 			/* i is connected to the sink */
 			i -> is_sink = 1;
-			i -> parent = TERMINAL;
+			i -> parent = MAXFLOW_TERMINAL;
 			set_active(i);
 			i -> DIST = 1;
 		}
@@ -219,7 +219,7 @@ template <typename captype, typename tcaptype, typename flowtype>
 				add_to_changed_list(i);
 			}
 		}
-		i->parent = TERMINAL;
+		i->parent = MAXFLOW_TERMINAL;
 		i -> TS = TIME;
 		i -> DIST = 1;
 	}
@@ -255,7 +255,7 @@ template <typename captype, typename tcaptype, typename flowtype>
 	for (i=middle_arc->sister->head; ; i=a->head)
 	{
 		a = i -> parent;
-		if (a == TERMINAL) break;
+		if (a == MAXFLOW_TERMINAL) break;
 		if (bottleneck > a->sister->r_cap) bottleneck = a -> sister -> r_cap;
 	}
 	if (bottleneck > i->tr_cap) bottleneck = i -> tr_cap;
@@ -263,7 +263,7 @@ template <typename captype, typename tcaptype, typename flowtype>
 	for (i=middle_arc->head; ; i=a->head)
 	{
 		a = i -> parent;
-		if (a == TERMINAL) break;
+		if (a == MAXFLOW_TERMINAL) break;
 		if (bottleneck > a->r_cap) bottleneck = a -> r_cap;
 	}
 	if (bottleneck > - i->tr_cap) bottleneck = - i -> tr_cap;
@@ -276,7 +276,7 @@ template <typename captype, typename tcaptype, typename flowtype>
 	for (i=middle_arc->sister->head; ; i=a->head)
 	{
 		a = i -> parent;
-		if (a == TERMINAL) break;
+		if (a == MAXFLOW_TERMINAL) break;
 		a -> r_cap += bottleneck;
 		a -> sister -> r_cap -= bottleneck;
 		if (!a->sister->r_cap)
@@ -293,7 +293,7 @@ template <typename captype, typename tcaptype, typename flowtype>
 	for (i=middle_arc->head; ; i=a->head)
 	{
 		a = i -> parent;
-		if (a == TERMINAL) break;
+		if (a == MAXFLOW_TERMINAL) break;
 		a -> sister -> r_cap += bottleneck;
 		a -> r_cap -= bottleneck;
 		if (!a->r_cap)
@@ -318,7 +318,7 @@ template <typename captype, typename tcaptype, typename flowtype>
 {
 	node *j;
 	arc *a0, *a0_min = NULL, *a;
-	int d, d_min = INFINITE_D;
+	int d, d_min = MAXFLOW_INFINITE_D;
 
 	/* trying to find a new parent */
 	for (a0=i->first; a0; a0=a0->next)
@@ -338,16 +338,16 @@ template <typename captype, typename tcaptype, typename flowtype>
 				}
 				a = j -> parent;
 				d ++;
-				if (a==TERMINAL)
+				if (a==MAXFLOW_TERMINAL)
 				{
 					j -> TS = TIME;
 					j -> DIST = 1;
 					break;
 				}
-				if (a==ORPHAN) { d = INFINITE_D; break; }
+				if (a==MAXFLOW_ORPHAN) { d = MAXFLOW_INFINITE_D; break; }
 				j = a -> head;
 			}
-			if (d<INFINITE_D) /* j originates from the source - done */
+			if (d<MAXFLOW_INFINITE_D) /* j originates from the source - done */
 			{
 				if (d<d_min)
 				{
@@ -381,7 +381,7 @@ template <typename captype, typename tcaptype, typename flowtype>
 			if (!j->is_sink && (a=j->parent))
 			{
 				if (a0->sister->r_cap) set_active(j);
-				if (a!=TERMINAL && a!=ORPHAN && a->head==i)
+				if (a!=MAXFLOW_TERMINAL && a!=MAXFLOW_ORPHAN && a->head==i)
 				{
 					set_orphan_rear(j); // add j to the end of the adoption list
 				}
@@ -395,7 +395,7 @@ template <typename captype, typename tcaptype, typename flowtype>
 {
 	node *j;
 	arc *a0, *a0_min = NULL, *a;
-	int d, d_min = INFINITE_D;
+	int d, d_min = MAXFLOW_INFINITE_D;
 
 	/* trying to find a new parent */
 	for (a0=i->first; a0; a0=a0->next)
@@ -415,16 +415,16 @@ template <typename captype, typename tcaptype, typename flowtype>
 				}
 				a = j -> parent;
 				d ++;
-				if (a==TERMINAL)
+				if (a==MAXFLOW_TERMINAL)
 				{
 					j -> TS = TIME;
 					j -> DIST = 1;
 					break;
 				}
-				if (a==ORPHAN) { d = INFINITE_D; break; }
+				if (a==MAXFLOW_ORPHAN) { d = MAXFLOW_INFINITE_D; break; }
 				j = a -> head;
 			}
-			if (d<INFINITE_D) /* j originates from the sink - done */
+			if (d<MAXFLOW_INFINITE_D) /* j originates from the sink - done */
 			{
 				if (d<d_min)
 				{
@@ -458,7 +458,7 @@ template <typename captype, typename tcaptype, typename flowtype>
 			if (j->is_sink && (a=j->parent))
 			{
 				if (a0->r_cap) set_active(j);
-				if (a!=TERMINAL && a!=ORPHAN && a->head==i)
+				if (a!=MAXFLOW_TERMINAL && a!=MAXFLOW_ORPHAN && a->head==i)
 				{
 					set_orphan_rear(j); // add j to the end of the adoption list
 				}
@@ -641,8 +641,8 @@ template <typename captype, typename tcaptype, typename flowtype>
 	{
 		// test whether all edges in seach trees are non-saturated
 		if (i->parent == NULL) {}
-		else if (i->parent == ORPHAN) {}
-		else if (i->parent == TERMINAL)
+		else if (i->parent == MAXFLOW_ORPHAN) {}
+		else if (i->parent == MAXFLOW_TERMINAL)
 		{
 			if (!i->is_sink) assert(i->tr_cap > 0);
 			else             assert(i->tr_cap < 0);
@@ -674,7 +674,7 @@ template <typename captype, typename tcaptype, typename flowtype>
 			}
 		}
 		// test marking invariants
-		if (i->parent && i->parent!=ORPHAN && i->parent!=TERMINAL)
+		if (i->parent && i->parent!=MAXFLOW_ORPHAN && i->parent!=MAXFLOW_TERMINAL)
 		{
 			assert(i->TS <= i->parent->head->TS);
 			if (i->TS == i->parent->head->TS) assert(i->DIST > i->parent->head->DIST);
