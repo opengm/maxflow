@@ -282,19 +282,19 @@ private:
 
 	struct node
 	{
-		arc			*first;		// first outcoming arc
+		arc			    *first;		// first outcoming arc
 
-		arc			*parent;	// node's parent
-		node		*next;		// pointer to the next active node
-								//   (or to itself if it is the last node in the list)
-		int			TS;			// timestamp showing when DIST was computed
-		int			DIST;		// distance to the terminal
-		int			is_sink : 1;	// flag showing whether the node is in the source or in the sink tree (if parent!=NULL)
-		int			is_marked : 1;	// set by mark_node()
-		int			is_in_changed_list : 1; // set by maxflow if 
+		arc			    *parent;	// node's parent
+		node		    *next;		// pointer to the next active node
+								    //   (or to itself if it is the last node in the list)
+		int			    TS;			// timestamp showing when DIST was computed
+		int			    DIST;		// distance to the terminal
+		unsigned int    is_sink : 1;	// flag showing whether the node is in the source or in the sink tree (if parent!=NULL)
+		unsigned int    is_marked : 1;	// set by mark_node()
+		unsigned int    is_in_changed_list : 1; // set by maxflow if
 
-		tcaptype	tr_cap;		// if tr_cap > 0 then tr_cap is residual capacity of the arc SOURCE->node
-								// otherwise         -tr_cap is residual capacity of the arc node->SINK 
+		tcaptype	    tr_cap;		// if tr_cap > 0 then tr_cap is residual capacity of the arc SOURCE->node
+								    // otherwise         -tr_cap is residual capacity of the arc node->SINK
 
 	};
 
