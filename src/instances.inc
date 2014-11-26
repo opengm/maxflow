@@ -1,4 +1,4 @@
-#include "graph.h"
+#include <maxflow/graph.h>
 
 #ifdef _MSC_VER
 #pragma warning(disable: 4661)

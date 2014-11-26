@@ -61,7 +61,7 @@
 #define __MAXFLOW_GRAPH_H__
 
 #include <string.h>
-#include "block.h"
+#include <maxflow/block.h>
 
 #include <assert.h>
 // NOTE: in UNIX you need to use -DNDEBUG preprocessor option to supress assert's!!!

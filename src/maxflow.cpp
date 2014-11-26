@@ -2,7 +2,7 @@
 
 
 #include <stdio.h>
-#include "graph.h"
+#include <maxflow/graph.h>
 
 using namespace maxflowLib;
 
