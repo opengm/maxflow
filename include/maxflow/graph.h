@@ -66,7 +66,7 @@
 #include <assert.h>
 // NOTE: in UNIX you need to use -DNDEBUG preprocessor option to supress assert's!!!
 
-
+namespace maxflowLib {
 
 // captype: type of edge capacities (excluding t-links)
 // tcaptype: type of t-links (edges between nodes and terminals)
@@ -510,5 +510,5 @@ template <typename captype, typename tcaptype, typename flowtype>
 	i->is_marked = 1;
 }
 
-
+} // namespace maxflowLib
 #endif

@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "graph.h"
 
+using namespace maxflowLib;
 
 /*
 	special constants for node->parent. Duplicated in graph.cpp, both should match!

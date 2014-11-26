@@ -98,6 +98,8 @@
 /***********************************************************************/
 /***********************************************************************/
 
+namespace maxflowLib {
+
 template <class Type> class Block
 {
 public:
@@ -292,6 +294,6 @@ private:
 	void	(*error_function)(const char *);
 };
 
-
+} // namespace maxflowLib
 #endif
 
